@@ -1,29 +1,36 @@
-var through = require('through');
+var through2 = require('through2');
 var gutil = require('gulp-util');
 var webmake = require('webmake');
 var util = require('util');
 var path = require('path');
 var PluginError = gutil.PluginError;
 
-module.exports = function Webmake (options) {
-  options = options || {};
-
+module.exports = function(options) {
   var defaultOptions = {};
-  options = util._extend(defaultOptions, options);
+  options = util._extend(defaultOptions, options || {});
 
-  return through(_process, gutil.noop);
-
-  function _process (file) {
+  return through2.obj(function(file, enc, next) {
     var self = this;
-    if (file.isNull()) return self.push(null);
 
-    function callback (err, contents) {
-      if (err) return self.emit('error',new gutil.PluginError('gulp-webmake', err, { showStack : true }));
-      var output = file.clone(file);
-      output.contents = new Buffer(contents);
-      self.emit('data', output);
+    if (file.isNull()) {
+      self.push(file);
+      return next();
     }
-    if (file.isStream()) webmake(s, options, callback);
-    else webmake(file.path, options, callback);
-  }
-}
+
+    if (file.isStream()) {
+      self.emit('error', new PluginError('gulp-webmake', 'Streaming not supported.'));
+      return next();
+    }
+
+    webmake(file.path, options, function(err, content) {
+      if (err) {
+        self.emit('error', new PluginError('gulp-webmake', err, { showStack : true }));
+      } else {
+        file.contents = new Buffer(content);
+        file.path = gutil.replaceExtension(file.path, '.js');
+        self.push(file);
+      }
+      next();
+    });
+  });
+};

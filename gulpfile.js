@@ -8,6 +8,7 @@ gulp.task('jshint', function () {
   return gulp
     .src([
       './gulpfile.js',
+      './index.js',
       './spec/*.js',
     ])
     .pipe(jshint())
