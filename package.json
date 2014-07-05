@@ -17,7 +17,7 @@
     "url": "https://github.com/cmtt/gulp-webmake/issues"
   },
   "dependencies": {
-    "through": "^2.3.4",
+    "through2": "^0.5.1",
     "gulp-util": "^2.2.14",
     "webmake": "^0.3.32"
   },

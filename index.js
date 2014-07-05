@@ -1,4 +1,4 @@
-var through = require('through');
+ var through2 = require('through2');
 var gutil = require('gulp-util');
 var webmake = require('webmake');
 var util = require('util');
@@ -9,11 +9,12 @@ module.exports = function(options) {
   var defaultOptions = {};
   options = util._extend(defaultOptions, options || {});
 
-  return through(function(file) {
+  return through2.obj(function(file, enc, next) {
     var self = this;
 
     if (file.isNull()) {
-      return self.push(null);
+      self.push(file);
+      return next();
     }
 
     if (file.isStream()) {
@@ -21,13 +22,15 @@ module.exports = function(options) {
       return next();
     }
 
-    webmake(file.path, options, function(err, contents) {
+    webmake(file.path, options, function(err, content) {
       if (err) {
-        return self.emit('error', new PluginError('gulp-webmake', err, { showStack: true }));
+        self.emit('error', new PluginError('gulp-webmake', err, { showStack : true }));
+      } else {
+        file.contents = new Buffer(content);
+        file.path = gutil.replaceExtension(file.path, '.js');
+        self.push(file);
       }
-      var output = file.clone(file);
-      output.contents = new Buffer(contents);
-      self.emit('data', output);
+      next();
     });
-  }, gutil.noop);
+  });
 };
