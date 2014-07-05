@@ -8,8 +8,13 @@ describe ('gulp-webmake"', function () {
 
   it ('does not process empty files', function (done) {
     var ws = webmake();
-    var file = new gutil.File({ contents : null });
-    ws.on('data', function (content) { throw new Error('Unexpectedly received data'); });
+    var file = new gutil.File({ contents: null });
+    ws.on('data', function (content) {
+      if (!content.isNull()) {
+        throw new Error('Unexpectedly received data');
+      }
+      done();
+    });
     ws.on('error', function (content) { throw new Error('Unexpectedly received an error'); });
     ws.on('end', function () { done(); });
     ws.write(file);
@@ -20,7 +25,7 @@ describe ('gulp-webmake"', function () {
     var file = new gutil.File({
       base: path.join(__dirname, './hello/'),
       path: path.join(__dirname, './hello/invalid-dep.js'),
-      contents : new Buffer('var is = require("unknown");', 'utf8')
+      contents: new Buffer('var is = require("unknown");', 'utf8')
     });
     ws.on('error', function (err) {
       assert.ok((/module \'\.\/a\-dep\' not found/i).test(err.message));
@@ -35,16 +40,16 @@ describe ('gulp-webmake"', function () {
     var ws = webmake();
 
     ws.on('data', function (content) {
-      var str = content.contents.toString();
-      var l = fixtures.length;
-      for (var i = 0; i < l; ++i) assert.equal(str[i], fixtures[i], 'file matches #' + i);
+      var file = content.contents.toString();
+      var fixture = fs.readFileSync(path.join(__dirname, 'fixtures', 'dep.js'), 'utf8');
+      assert.equal(file, fixture, 'file matches fixture');
       done();
     });
 
     var file = new gutil.File({
       base: path.join(__dirname, './hello/'),
       path: path.join(__dirname, './hello/index.js'),
-      contents : fs.readFileSync(path.join(__dirname, './hello/index.js'))
+      contents: fs.readFileSync(path.join(__dirname, './hello/index.js'))
     });
 
     ws.write(file);
