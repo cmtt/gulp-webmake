@@ -1,4 +1,4 @@
- var through2 = require('through2');
+var through2 = require('through2');
 var gutil = require('gulp-util');
 var webmake = require('webmake');
 var util = require('util');

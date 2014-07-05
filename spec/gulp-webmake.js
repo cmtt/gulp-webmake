@@ -36,22 +36,18 @@ describe ('gulp-webmake"', function () {
   });
 
   it ('bundles according to fixture', function (done) {
-    var fixtures = fs.readFileSync(path.join(__dirname, './fixtures/dep.js'),'utf8');
     var ws = webmake();
-
-    ws.on('data', function (content) {
-      var file = content.contents.toString();
-      var fixture = fs.readFileSync(path.join(__dirname, 'fixtures', 'dep.js'), 'utf8');
-      assert.equal(file, fixture, 'file matches fixture');
-      done();
-    });
-
+    var fixture = fs.readFileSync(path.join(__dirname, 'fixtures', 'dep.js'), 'utf8');
     var file = new gutil.File({
       base: path.join(__dirname, './hello/'),
       path: path.join(__dirname, './hello/index.js'),
       contents: fs.readFileSync(path.join(__dirname, './hello/index.js'))
     });
-
+    ws.on('data', function (content) {
+      var file = content.contents.toString();
+      assert.equal(file, fixture, 'file matches fixture');
+      done();
+    });
     ws.write(file);
   });
 
