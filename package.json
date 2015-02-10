@@ -1,6 +1,6 @@
 {
   "name": "gulp-webmake",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -17,13 +17,13 @@
     "url": "https://github.com/cmtt/gulp-webmake/issues"
   },
   "dependencies": {
-    "through2": "^0.5.1",
-    "gulp-util": "^2.2.19",
-    "webmake": "^0.3.34"
+    "through2": "~0.6.3",
+    "gulp-util": "~3.0.3",
+    "webmake": "0.3.37"
   },
   "devDependencies" : {
-    "gulp-mocha": "^0.4.1",
-    "gulp": "^3.8.5",
-    "gulp-jshint": "^1.6.4"
+    "gulp-mocha": "~2.0.0",
+    "gulp": "~3.8.11",
+    "gulp-jshint": "~1.9.2"
   }
 }

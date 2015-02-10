@@ -4,7 +4,7 @@ var path = require('path');
 var gutil = require('gulp-util');
 var webmake = require('../');
 
-describe ('gulp-webmake"', function () {
+describe ('gulp-webmake', function () {
 
   it ('does not process empty files', function (done) {
     var ws = webmake();
@@ -23,8 +23,8 @@ describe ('gulp-webmake"', function () {
   it ('emits errors', function (done) {
     var ws = webmake();
     var file = new gutil.File({
-      base: path.join(__dirname, './hello/'),
-      path: path.join(__dirname, './hello/invalid-dep.js'),
+      base: _basePath('./hello/'),
+      path: _basePath('./hello/invalid-dep.js'),
       contents: new Buffer('var is = require("unknown");', 'utf8')
     });
     ws.on('error', function (err) {
@@ -37,11 +37,27 @@ describe ('gulp-webmake"', function () {
 
   it ('bundles according to fixture', function (done) {
     var ws = webmake();
-    var fixture = fs.readFileSync(path.join(__dirname, 'fixtures', 'dep.js'), 'utf8');
+    var fixture = fs.readFileSync(_basePath('fixtures', 'dep.js'), 'utf8');
     var file = new gutil.File({
-      base: path.join(__dirname, './hello/'),
-      path: path.join(__dirname, './hello/index.js'),
-      contents: fs.readFileSync(path.join(__dirname, './hello/index.js'))
+      base: _basePath('./hello/'),
+      path: _basePath('./hello/index.js'),
+      contents: fs.readFileSync(_basePath('./hello/index.js'))
+    });
+    ws.on('data', function (content) {
+      var file = content.contents.toString();
+      assert.equal(file, fixture, 'file matches fixture');
+      done();
+    });
+    ws.write(file);
+  });
+
+  it ('bundles with a custom name according to fixture', function (done) {
+    var ws = webmake({ name : 'customHello' });
+    var fixture = fs.readFileSync(_basePath('fixtures', 'dep-with-custom-name.js'), 'utf8');
+    var file = new gutil.File({
+      base: _basePath('./hello/'),
+      path: _basePath('./hello/index.js'),
+      contents: fs.readFileSync(_basePath('./hello/index.js'))
     });
     ws.on('data', function (content) {
       var file = content.contents.toString();
@@ -52,3 +68,9 @@ describe ('gulp-webmake"', function () {
   });
 
 });
+
+function _basePath () {
+  var args = Array.prototype.slice.apply(arguments);
+  args.unshift(__dirname);
+  return path.join.apply(path, args);
+}

@@ -32,6 +32,11 @@ Please refer to the [webmake documentation](https://github.com/medikoo/modules-w
 
 ## Changelog
 
+0.0.3 - 02/10/2015
+
+ - updating to recent versions of the module's dependencies
+ - updated tests
+
 0.0.2 - 07/05/2014
 
  - upgrade to through2
