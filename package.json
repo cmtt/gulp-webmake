@@ -1,6 +1,6 @@
 {
   "name": "gulp-webmake",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -19,7 +19,7 @@
   "dependencies": {
     "through2": "~0.6.3",
     "gulp-util": "~3.0.3",
-    "webmake": "0.3.37"
+    "webmake": "~0.3.39"
   },
   "devDependencies" : {
     "gulp-mocha": "~2.0.0",
