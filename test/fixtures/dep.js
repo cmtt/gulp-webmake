@@ -22,7 +22,7 @@
 		return null;
 	};
 	resolve = function (scope, tree, path, fullPath, state, id) {
-		var name, dir, exports, module, fn, found, i, ext;
+		var name, dir, exports, module, fn, found, ext;
 		path = path.split('/');
 		name = path.pop();
 		if ((name === '.') || (name === '..')) {
@@ -110,7 +110,7 @@
 	return getRequire(modules, [], '');
 })({
 	"gulp-webmake": {
-		"spec": {
+		"test": {
 			"hello": {
 				"dep.js": function (exports, module, require) {
 					module.exports = {
@@ -126,4 +126,4 @@
 			}
 		}
 	}
-})("gulp-webmake/spec/hello/index");
+})("gulp-webmake/test/hello/index");

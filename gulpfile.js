@@ -17,6 +17,6 @@ gulp.task('jshint', function () {
 
 gulp.task('mocha', function () {
   return gulp
-    .src('spec/*.js')
+    .src('test/*.js')
     .pipe(mocha());
 });

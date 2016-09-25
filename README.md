@@ -32,6 +32,12 @@ Please refer to the [webmake documentation](https://github.com/medikoo/modules-w
 
 ## Changelog
 
+0.0.41 - 09/25/2016
+
+ - updating to recent versions of the module's dependencies
+ - updating fixtures to match the output of webmake 0.3.40
+ - Renaming ``spec`` folder to ``test``
+
 0.0.4 - 04/15/2015
 
  - updating to recent versions of the module's dependencies
